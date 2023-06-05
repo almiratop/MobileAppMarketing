@@ -9,7 +9,6 @@ namespace TEST
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new MainPage());
         }
 

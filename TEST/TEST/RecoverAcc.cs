@@ -23,29 +23,30 @@ namespace TEST
             stackLayout.BackgroundColor = Color.White;
 
 
-            mailEntry = new Entry
-            {
-                Placeholder = "Почта",
-                Margin = new Thickness(10),
-                TextColor = Color.Black,
-                Text = ""
-            };
+			mailEntry = new Entry
+			{
+				Placeholder = "Почта",
+				Margin = new Thickness(10),
+				TextColor = Color.Black,
+				Text = "",
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label))
+			};
 
+			textLabel = new Label
+			{
+				Text = "",
+				FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+				TextColor = Color.Black
+			};
 
-            textLabel = new Label
-            {
-                Text = "",
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = Color.Black
-            };
-
-            button = new Button
+			button = new Button
             {
                 Text = "Восстановить",
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
                 BorderWidth = 1,
                 HorizontalOptions = LayoutOptions.Center,
-                Margin = new Thickness(20),
+				VerticalOptions = LayoutOptions.EndAndExpand,
+				Margin = new Thickness(20),
                 TextColor = Color.White,
                 BackgroundColor = Color.FromHex("#a6075b")
 

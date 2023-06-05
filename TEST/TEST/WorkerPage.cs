@@ -72,22 +72,23 @@ namespace TEST
                             };
                             stackLayout4.Children.Add(textLabel1);
                             stackLayout4.Children.Add(textLabel2);
-                            if (Convert.ToString(reader["status"]) == "в работе")
-                            {
-                                ok = new Button
-                                {
-                                    Text = "завершено",
-                                    FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Button)),
-                                    HorizontalOptions = LayoutOptions.EndAndExpand,
-                                    BorderWidth = 1,
-                                    TextColor = Color.White,
-                                    BackgroundColor = Color.FromHex("#a6075b"),
-                                    ClassId = "But" + Convert.ToString(reader["zakaz_id"])
-                                };
-                                ok.Clicked += ok_Click;
-                                stackLayout4.Children.Add(ok);
-                            }
-                            if (Convert.ToString(reader["status"]) == "создан")
+
+							if (Convert.ToString(reader["status"]) == "в работе")
+							{
+								ok = new Button
+								{
+									Text = "завершено",
+									FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Button)),
+									HorizontalOptions = LayoutOptions.EndAndExpand,
+									BorderWidth = 1,
+									TextColor = Color.White,
+									BackgroundColor = Color.FromHex("#a6075b"),
+									ClassId = "But" + Convert.ToString(reader["zakaz_id"])
+								};
+								ok.Clicked += ok_Click;
+								stackLayout4.Children.Add(ok);
+							}
+							if (Convert.ToString(reader["status"]) == "создан")
                             {
                                 ok = new Button
                                 {
@@ -102,8 +103,9 @@ namespace TEST
                                 ok.Clicked += ok_Click2;
                                 stackLayout4.Children.Add(ok);
                             }
+							
 
-                            border.Content = stackLayout4;
+							border.Content = stackLayout4;
                             stackLayout3.Children.Add(border);
                         }
                     }
@@ -121,30 +123,37 @@ namespace TEST
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                     VerticalOptions = LayoutOptions.EndAndExpand
                 };
+				var buttonStyle = new Style(typeof(Button))
+				{
+					Setters = {
+		new Setter { Property = Button.TextColorProperty, Value = Color.White },
+		new Setter { Property = Button.BackgroundColorProperty, Value = Color.FromHex("#a6075b") },
+		new Setter { Property = Button.FontSizeProperty, Value = Device.GetNamedSize(NamedSize.Micro, typeof(Button)) },
+		new Setter { Property = Button.BorderWidthProperty, Value = 1 },
+		new Setter { Property = Button.BorderColorProperty, Value = Color.FromHex("#a6075b") },
+		new Setter { Property = Button.CornerRadiusProperty, Value = 5 },
+		new Setter { Property = Button.HorizontalOptionsProperty, Value = LayoutOptions.Center },
+		new Setter { Property = Button.MarginProperty, Value = new Thickness(20) },
+		new Setter { Property = VisualElement.HeightRequestProperty, Value = 40 },
+		new Setter { Property = VisualElement.WidthRequestProperty, Value = 150 },
+		new Setter { Property = Button.FontFamilyProperty, Value = "Arial" },
+		new Setter { Property = Button.FontAttributesProperty, Value = FontAttributes.Bold },
+	}
+				};
 
-                button2 = new Button
+				button2 = new Button
                 {
                     Text = "Сообщения",
-                    FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Button)),
-                    BorderWidth = 1,
-                    HorizontalOptions = LayoutOptions.Fill,
-                    Margin = new Thickness(20),
-                    TextColor = Color.White,
-                    BackgroundColor = Color.FromHex("#a6075b")
-                };
+					Style = buttonStyle
+				};
 
                 button2.Clicked += OnButton2Clicked;
 
                 button3 = new Button
                 {
                     Text = "Выход",
-                    FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Button)),
-                    BorderWidth = 1,
-                    HorizontalOptions = LayoutOptions.Fill,
-                    Margin = new Thickness(20),
-                    TextColor = Color.White,
-                    BackgroundColor = Color.FromHex("#a6075b")
-                };
+					Style = buttonStyle
+				};
 
                 button3.Clicked += OnButton3Clicked;
 

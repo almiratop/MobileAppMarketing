@@ -19,51 +19,59 @@ namespace TEST
             Title = "Регистрация";
             stackLayout = new StackLayout();
             stackLayout.BackgroundColor = Color.White;
-            nameEntry = new Entry
+
+			var entryStyle = new Style(typeof(Entry))
+			{
+				Setters = {
+		new Setter { Property = Entry.PlaceholderColorProperty, Value = Color.Gray },
+		new Setter { Property = Entry.TextColorProperty, Value = Color.Black },
+		new Setter { Property = Entry.BackgroundColorProperty, Value = Color.FromHex("#ECECEC") },
+		new Setter { Property = Entry.FontSizeProperty, Value = Device.GetNamedSize(NamedSize.Small, typeof(Entry)) },
+		new Setter { Property = Entry.MarginProperty, Value = new Thickness(10) },
+		new Setter { Property = Entry.HeightRequestProperty, Value = 40 },
+		new Setter { Property = Entry.HorizontalOptionsProperty, Value = LayoutOptions.FillAndExpand },
+	}
+			};
+
+			nameEntry = new Entry
             {
                 Placeholder = "Имя",
-                Margin = new Thickness(10),
-                TextColor = Color.Black
+				Style = entryStyle
 
-            };
+			};
             numberEntry = new Entry
             {
                 Placeholder = "Номер телефона",
-                Margin = new Thickness(10),
-                TextColor = Color.Black
-            };
+				Style = entryStyle
+			};
 
             mailEntry = new Entry
             {
                 Placeholder = "Почта",
-                Margin = new Thickness(10),
-                TextColor = Color.Black
-            };
+				Style = entryStyle
+			};
 
 
             loginEntry = new Entry
             {
                 Placeholder = "Логин",
-                Margin = new Thickness(10),
-                TextColor = Color.Black
-            };
+				Style = entryStyle
+			};
 
             passwordEntry = new Entry
             {
                 Placeholder = "Пароль",
                 IsPassword = true,
-                Margin = new Thickness(10),
-                TextColor = Color.Black
+				Style = entryStyle
 
-            };
+			};
 
             passwordEntry2 = new Entry
             {
-                Placeholder = "Password",
+                Placeholder = "Пароль",
                 IsPassword = true,
-                Margin = new Thickness(10),
-                TextColor = Color.Black
-            };
+				Style = entryStyle
+			};
 
             textLabel = new Label
             {
@@ -74,21 +82,22 @@ namespace TEST
             passwordEntry.TextChanged += passwordEntry_TextChanged;
             passwordEntry2.TextChanged += passwordEntry_TextChanged;
 
-            button = new Button
-            {
-                Text = "Регистрация",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
-                BorderWidth = 1,
-                HorizontalOptions = LayoutOptions.Center,
-                Margin = new Thickness(20),
-                TextColor = Color.White,
-                BackgroundColor = Color.FromHex("#a6075b")
+			Button button = new Button
+			{
+				Text = "Регистрация",
+				FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+				BorderWidth = 1,
+				HorizontalOptions = LayoutOptions.Center,
+				VerticalOptions = LayoutOptions.EndAndExpand, 
+				Margin = new Thickness(20),
+				TextColor = Color.White,
+				BackgroundColor = Color.FromHex("#a6075b")
+			};
 
-            };
-            button.Clicked += OnButtonClicked;
+			button.Clicked += OnButtonClicked;
 
 
-            textLabel2 = new Label
+			textLabel2 = new Label
             {
                 Text = "",
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
@@ -169,6 +178,59 @@ namespace TEST
             }
 
         }
+		public bool Reg(string Name, string Number, string Mail, string Login, string Password)
+		{
+			using (MySqlConnection conn = new MySqlConnection("server=127.0.0.1;port=3306;database=mydb;user id=root;password=1234;charset=utf8;Pooling=false;SslMode=None;"))
+			{
+				try
+				{
+					conn.Open();
 
-    }
+					MySqlCommand cmd1 = new MySqlCommand("SELECT Client_Id FROM Client WHERE login = @login OR mail = @mail", conn);
+					cmd1.Parameters.AddWithValue("@login", Login);
+					cmd1.Parameters.AddWithValue("@mail", Mail);
+					if (cmd1.ExecuteScalar() != null)
+					{
+						return false;
+					}
+
+					MySqlCommand cmd2 = new MySqlCommand("SELECT Worker_Id FROM Worker WHERE login = @login OR mail = @mail", conn);
+					cmd2.Parameters.AddWithValue("@login", Login);
+					cmd2.Parameters.AddWithValue("@mail", Mail);
+					if (cmd2.ExecuteScalar() != null)
+					{
+						return false;
+					}
+
+					MySqlCommand cmd3 = new MySqlCommand("SELECT Adminis_Id FROM Adminis WHERE login = @login", conn);
+					cmd3.Parameters.AddWithValue("@login", Login);
+					if (cmd3.ExecuteScalar() != null)
+					{
+						return false;
+					}
+
+					MySqlCommand cmd4 = new MySqlCommand("SELECT Manager_Id FROM Manager WHERE login = @login OR mail = @mail", conn);
+					cmd4.Parameters.AddWithValue("@login", Login);
+					cmd4.Parameters.AddWithValue("@mail", Mail);
+					if (cmd4.ExecuteScalar() != null)
+					{
+						return false;
+					}
+
+					MySqlCommand cmd = new MySqlCommand("INSERT INTO client (name, number, mail, login, password) VALUES (@name, @number, @mail, @login, @password);", conn);
+					cmd.Parameters.AddWithValue("@name", Name);
+					cmd.Parameters.AddWithValue("@number", Number);
+					cmd.Parameters.AddWithValue("@mail", Mail);
+					cmd.Parameters.AddWithValue("@login", Login);
+					cmd.Parameters.AddWithValue("@password", Password);
+					cmd.ExecuteNonQuery();
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
+		}
+	}
 }
