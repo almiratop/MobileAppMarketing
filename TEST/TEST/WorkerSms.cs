@@ -39,8 +39,12 @@ namespace TEST
 			if (conn.State == ConnectionState.Closed)
 			{
 				conn.Open();
+				MySqlCommand cmd = new MySqlCommand("select client_id from zakaz where zakaz_id = @zakaz_id LIMIT 1", conn);
+				cmd.Parameters.AddWithValue("@zakaz_id", ZakazId);
+				int clientid = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
 				MySqlCommand cmd2 = new MySqlCommand("select name from client where client_id = @client_id", conn);
-				cmd2.Parameters.AddWithValue("@client_id", WorkerId);
+				cmd2.Parameters.AddWithValue("@client_id", clientid);
 				textLabel.Text = cmd2.ExecuteScalar().ToString();
 
 				MySqlCommand cmd1 = new MySqlCommand("select * from sms where zakaz_id = @zakaz_id", conn);

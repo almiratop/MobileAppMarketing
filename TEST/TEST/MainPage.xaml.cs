@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 using System.Data;
 using MySqlConnector;
+using System;
 
 namespace TEST
 {
@@ -133,7 +134,7 @@ namespace TEST
                             if (cmd1.ExecuteScalar() != null)
                             {
                                 name = cmd1.ExecuteScalar().ToString();
-                                await Navigation.PushModalAsync(new NavigationPage(new ClientPage(1)));
+                                await Navigation.PushModalAsync(new NavigationPage(new ClientPage(Convert.ToInt32(name))));
                             }
                         }
                         if (name == "")
@@ -143,8 +144,8 @@ namespace TEST
                             if (cmd2.ExecuteScalar() != null)
                             {
                                 name = cmd2.ExecuteScalar().ToString();
-                                await Navigation.PushModalAsync(new NavigationPage(new WorkerPage(1)));
-                            }
+                                await Navigation.PushModalAsync(new NavigationPage(new WorkerPage(Convert.ToInt32(name))));
+							}
                         }
 
                         if (name == "")

@@ -39,6 +39,7 @@ namespace TEST
 					cmd1.Parameters.AddWithValue("@client_id", Id);
 					MySqlDataReader reader = cmd1.ExecuteReader();
 
+
 					while (reader.Read())
 					{
 						int usluga_id = Convert.ToInt32(reader["usluga_id"]);

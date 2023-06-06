@@ -185,5 +185,7 @@ namespace TEST
 				await DisplayAlert("Сообщение об ошибке", ex.ToString(), "OK");
 			}
 		}
+
+
 	}
 }
